@@ -3,7 +3,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Calendar from '../components/Calendar';
 import ServiceCard from '../components/ServiceCard';
-import { Calendar as CalendarIcon, Clock, Star, Plus, Lock, Dog, Grid, ShieldCheck, X, Heart } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Star, Plus, Lock, Dog, Grid, ShieldCheck, X, Heart, QrCode } from 'lucide-react';
 
 const StatCard = ({ icon: Icon, label, value, color, onClick }) => (
     <Card
@@ -31,6 +31,7 @@ const Home = ({ onNavigate }) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [showRatingsModal, setShowRatingsModal] = useState(false);
     const [showHistoryModal, setShowHistoryModal] = useState(false);
+    const [showQRModal, setShowQRModal] = useState(false);
 
     // Mock ratings data
     const myRatings = [
@@ -82,10 +83,15 @@ const Home = ({ onNavigate }) => {
                     <h1 style={{ fontSize: '32px' }}>Good Morning</h1>
                     <p style={{ color: 'var(--color-text-secondary)' }}>Here's your cleaning summary.</p>
                 </div>
-                <Button onClick={() => onNavigate('onboarding')}>
-                    <Plus size={18} style={{ marginRight: '8px' }} />
-                    New Request
-                </Button>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    <Button variant="secondary" onClick={() => setShowQRModal(true)} style={{ padding: '12px' }}>
+                        <QrCode size={20} />
+                    </Button>
+                    <Button onClick={() => onNavigate('onboarding')}>
+                        <Plus size={18} style={{ marginRight: '8px' }} />
+                        New Request
+                    </Button>
+                </div>
             </header>
 
             <div style={{
@@ -520,6 +526,69 @@ const Home = ({ onNavigate }) => {
                         </div>
 
                         <Button style={{ width: '100%', marginTop: '24px' }} onClick={() => setShowHistoryModal(false)}>
+                            Close
+                        </Button>
+                    </div>
+                </div>
+            )}
+
+            {showQRModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000,
+                    padding: '20px'
+                }}>
+                    <div className="fade-in" style={{
+                        backgroundColor: 'white',
+                        borderRadius: '24px',
+                        padding: '32px',
+                        width: '100%',
+                        maxWidth: '400px',
+                        position: 'relative',
+                        textAlign: 'center'
+                    }}>
+                        <button
+                            onClick={() => setShowQRModal(false)}
+                            style={{
+                                position: 'absolute',
+                                top: '20px',
+                                right: '20px',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                color: 'var(--color-text-secondary)'
+                            }}
+                        >
+                            <X size={24} />
+                        </button>
+
+                        <h2 style={{ marginBottom: '8px', fontSize: '24px' }}>Share App</h2>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '24px' }}>Scan to open on your device</p>
+
+                        <div style={{
+                            backgroundColor: 'white',
+                            padding: '16px',
+                            borderRadius: '16px',
+                            border: '1px solid var(--color-border)',
+                            display: 'inline-block',
+                            marginBottom: '24px'
+                        }}>
+                            <img
+                                src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://easyclean-app.vercel.app/"
+                                alt="App QR Code"
+                                style={{ width: '250px', height: '250px', display: 'block' }}
+                            />
+                        </div>
+
+                        <Button style={{ width: '100%' }} onClick={() => setShowQRModal(false)}>
                             Close
                         </Button>
                     </div>
