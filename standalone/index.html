@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleaning Service</title>
+    <style>
+        /* CSS Variables & Reset */
+        :root {
+            --color-background: #ffffff;
+            --color-surface: #f5f5f7;
+            --color-surface-alt: #ffffff;
+            --color-text-primary: #1d1d1f;
+            --color-text-secondary: #86868b;
+            --color-accent: #0071e3;
+            --color-accent-hover: #0077ed;
+            --color-border: #d2d2d7;
+            --color-success: #34c759;
+            --color-warning: #ff9f0a;
+            --color-error: #ff3b30;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --radius-lg: 18px;
+            --radius-full: 9999px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Components */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background-color: var(--color-accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--color-accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        /* Views */
+        .view {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Icons (Simple SVG placeholders) */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Specific Styles */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .cleaner-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .option-card {
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .option-card.selected {
+            border-color: var(--color-accent);
+            background: rgba(0, 113, 227, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- LOGIN VIEW -->
+        <div id="view-login" class="view active">
+            <div style="display: flex; justify-content: center; align-items: center; min-height: 90vh;">
+                <div class="glass-panel" style="width: 100%; max-width: 400px; text-align: center;">
+                    <h2 style="margin-bottom: 8px; font-size: 28px;">Welcome Back</h2>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 32px;">Sign in to manage your home
+                        cleaning.</p>
+                    <form onsubmit="app.login(event)">
+                        <div class="input-group" style="text-align: left;">
+                            <label>Email</label>
+                            <input type="email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="input-group" style="text-align: left;">
+                            <label>Password</label>
+                            <input type="password" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Sign
+                            In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOME VIEW -->
+        <div id="view-home" class="view">
+            <div class="container">
+                <header
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-bottom: 24px;">
+                    <div>
+                        <h1 style="font-size: 32px;">Good Morning</h1>
+                        <p style="color: var(--color-text-secondary);">Here's your cleaning summary.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="app.navigate('onboarding')">+ New Request</button>
+                </header>
+
+                <div class="stat-grid">
+                    <div class="glass-panel">
+                        <div style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 4px;">Next
+                            Cleaning</div>
+                        <div style="font-size: 20px; font-weight: 700;">Tomorrow, 10 AM</div>
+                    </div>
+                    <div class="glass-panel">
+                        <div style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 4px;">Total
+                            Hours</div>
+                        <div style="font-size: 20px; font-weight: 700;">24h</div>
+                    </div>
+                    <div class="glass-panel">
+                        <div style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 4px;">Avg Rating
+                        </div>
+                        <div style="font-size: 20px; font-weight: 700; color: var(--color-warning);">★ 4.9</div>
+                    </div>
+                </div>
+
+                <h2 style="margin-bottom: 16px;">Recent Activity</h2>
+                <div class="glass-panel">
+                    <div
+                        style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--color-border);">
+                        <div>
+                            <div style="font-weight: 500;">Standard Cleaning</div>
+                            <div style="font-size: 14px; color: var(--color-text-secondary);">2 days ago • 3 hours</div>
+                        </div>
+                        <div style="font-weight: 600;">$45.00</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                        <div>
+                            <div style="font-weight: 500;">Deep Cleaning</div>
+                            <div style="font-size: 14px; color: var(--color-text-secondary);">Last week • 5 hours</div>
+                        </div>
+                        <div style="font-weight: 600;">$85.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONBOARDING VIEW -->
+        <div id="view-onboarding" class="view">
+            <div class="container" style="max-width: 600px;">
+                <button class="btn btn-secondary" onclick="app.navigate('home')" style="margin-bottom: 20px;">←
+                    Back</button>
+                <h1 style="font-size: 32px; margin-bottom: 8px;">Define your home</h1>
+                <p id="step-indicator" style="color: var(--color-text-secondary); margin-bottom: 24px;">Step 1 of 3</p>
+
+                <div class="glass-panel">
+                    <!-- Step 1 -->
+                    <div id="step-1">
+                        <h2 style="margin-bottom: 24px;">How big is your place?</h2>
+                        <div class="input-group">
+                            <label>Approximate Size (m²)</label>
+                            <input type="number" value="80" id="input-size">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display:block; margin-bottom:8px; font-weight:500;">Bedrooms: <span
+                                    id="val-rooms">2</span></label>
+                            <input type="range" min="0" max="10" value="2" style="width:100%"
+                                oninput="document.getElementById('val-rooms').innerText = this.value">
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label style="display:block; margin-bottom:8px; font-weight:500;">Bathrooms: <span
+                                    id="val-baths">1</span></label>
+                            <input type="range" min="0" max="10" value="1" style="width:100%"
+                                oninput="document.getElementById('val-baths').innerText = this.value">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%" onclick="app.nextStep(2)">Continue</button>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div id="step-2" style="display: none;">
+                        <h2 style="margin-bottom: 24px;">How often?</h2>
+                        <div class="option-card selected" onclick="app.selectFreq(this, 'weekly')">
+                            <div style="font-weight: 600;">Weekly</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary);">Save 20%</div>
+                        </div>
+                        <div class="option-card" onclick="app.selectFreq(this, 'biweekly')">
+                            <div style="font-weight: 600;">Bi-weekly</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary);">Save 15%</div>
+                        </div>
+                        <div class="option-card" onclick="app.selectFreq(this, 'onetime')">
+                            <div style="font-weight: 600;">One-time</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary);">Standard pricing</div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 16px;"
+                            onclick="app.nextStep(3)">Continue</button>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div id="step-3" style="display: none;">
+                        <h2 style="margin-bottom: 24px;">Summary</h2>
+                        <div
+                            style="background: var(--color-surface); padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+                            <p><strong>Property:</strong> <span id="sum-prop"></span></p>
+                            <p><strong>Size:</strong> <span id="sum-size"></span> m²</p>
+                            <p><strong>Frequency:</strong> <span id="sum-freq"
+                                    style="text-transform: capitalize;"></span></p>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%" onclick="app.finishOnboarding()">Find
+                            Cleaners</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MATCHING VIEW -->
+        <div id="view-matching" class="view">
+            <div class="container">
+                <button class="btn btn-secondary" onclick="app.navigate('onboarding')" style="margin-bottom: 20px;">←
+                    Back</button>
+                <h1 style="font-size: 32px; margin-bottom: 8px;">Great Matches</h1>
+                <p style="color: var(--color-text-secondary); margin-bottom: 32px;">Based on your home profile.</p>
+
+                <div id="cleaners-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            data: {
+                rooms: 2,
+                baths: 1,
+                size: 80,
+                frequency: 'weekly'
+            },
+
+            login: (e) => {
+                e.preventDefault();
+                app.navigate('home');
+            },
+
+            navigate: (viewId) => {
+                document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+                document.getElementById('view-' + viewId).classList.add('active');
+
+                // Reset onboarding if leaving it
+                if (viewId === 'onboarding') {
+                    app.nextStep(1);
+                }
+            },
+
+            nextStep: (step) => {
+                ['step-1', 'step-2', 'step-3'].forEach(id => document.getElementById(id).style.display = 'none');
+                document.getElementById('step-' + step).style.display = 'block';
+                document.getElementById('step-indicator').innerText = `Step ${step} of 3`;
+
+                if (step === 3) {
+                    // Update summary
+                    app.data.rooms = document.getElementById('val-rooms').innerText;
+                    app.data.baths = document.getElementById('val-baths').innerText;
+                    app.data.size = document.getElementById('input-size').value;
+
+                    document.getElementById('sum-prop').innerText = `${app.data.rooms} Bed, ${app.data.baths} Bath`;
+                    document.getElementById('sum-size').innerText = app.data.size;
+                    document.getElementById('sum-freq').innerText = app.data.frequency;
+                }
+            },
+
+            selectFreq: (el, freq) => {
+                document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                el.classList.add('selected');
+                app.data.frequency = freq;
+            },
+
+            finishOnboarding: () => {
+                app.renderCleaners();
+                app.navigate('matching');
+            },
+
+            renderCleaners: () => {
+                const cleaners = [
+                    { name: 'Sarah Jenkins', rating: 4.9, reviews: 124, price: 35, tags: ['Pet Friendly', 'Deep Clean'] },
+                    { name: 'Michael Chen', rating: 4.8, reviews: 89, price: 32, tags: ['Eco Products', 'Fast'] },
+                    { name: 'Emma Wilson', rating: 5.0, reviews: 56, price: 40, tags: ['Premium', 'Detail Oriented'] }
+                ];
+
+                const container = document.getElementById('cleaners-list');
+                container.innerHTML = cleaners.map(c => `
+                    <div class="glass-panel cleaner-card">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div style="width: 50px; height: 50px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center;">👤</div>
+                            <div>
+                                <h3 style="font-size: 18px; margin-bottom: 4px;">${c.name}</h3>
+                                <div style="color: var(--color-warning); font-weight: 600; font-size: 14px;">★ ${c.rating} <span style="color: var(--color-text-secondary); font-weight: 400;">(${c.reviews} reviews)</span></div>
+                                <div style="margin-top: 4px;">
+                                    ${c.tags.map(t => `<span style="font-size: 12px; background: #f5f5f7; padding: 2px 8px; border-radius: 10px; color: var(--color-text-secondary); margin-right: 4px;">${t}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">$${c.price}/hr</div>
+                            <button class="btn btn-primary" onclick="alert('Selected ${c.name}')">Select</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        };
+    </script>
+</body>
+
+</html>
