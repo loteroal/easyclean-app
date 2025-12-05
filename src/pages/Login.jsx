@@ -9,6 +9,7 @@ const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
+    const [role, setRole] = useState('client'); // 'client' or 'cleaner'
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
 
@@ -23,6 +24,11 @@ const Login = ({ onLogin }) => {
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
+                    options: {
+                        data: {
+                            role: role
+                        }
+                    }
                 });
                 if (error) throw error;
                 setMessage('Check your email for the confirmation link!');
@@ -46,7 +52,13 @@ const Login = ({ onLogin }) => {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin
+                    redirectTo: window.location.origin,
+                    queryParams: {
+                        // Note: Google OAuth doesn't easily support passing metadata directly in the initial request 
+                        // without a custom flow, but for simplicity we'll default to 'client' or handle it post-login
+                        // if we were building a full production app. 
+                        // For now, Google login defaults to Client.
+                    }
                 }
             });
             if (error) throw error;
@@ -74,6 +86,53 @@ const Login = ({ onLogin }) => {
                 </div>
 
                 <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+                    {/* Role Selection Toggle */}
+                    <div style={{
+                        display: 'flex',
+                        backgroundColor: '#f0f0f5',
+                        padding: '4px',
+                        borderRadius: '12px',
+                        marginBottom: '8px'
+                    }}>
+                        <button
+                            type="button"
+                            onClick={() => setRole('client')}
+                            style={{
+                                flex: 1,
+                                padding: '10px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                backgroundColor: role === 'client' ? 'white' : 'transparent',
+                                color: role === 'client' ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                                fontWeight: role === 'client' ? '600' : '400',
+                                boxShadow: role === 'client' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            Client
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setRole('cleaner')}
+                            style={{
+                                flex: 1,
+                                padding: '10px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                backgroundColor: role === 'cleaner' ? 'white' : 'transparent',
+                                color: role === 'cleaner' ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                                fontWeight: role === 'cleaner' ? '600' : '400',
+                                boxShadow: role === 'cleaner' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            Cleaner
+                        </button>
+                    </div>
+
                     <Input
                         label="Email"
                         type="email"
@@ -95,7 +154,7 @@ const Login = ({ onLogin }) => {
                     {message && <div style={{ color: '#34c759', fontSize: '14px', textAlign: 'center' }}>{message}</div>}
 
                     <Button type="submit" disabled={loading}>
-                        {loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
+                        {loading ? 'Loading...' : (isSignUp ? (role === 'cleaner' ? 'Join as Cleaner' : 'Sign Up') : 'Sign In')}
                     </Button>
 
                     <div style={{ display: 'flex', alignItems: 'center', margin: '16px 0' }}>
