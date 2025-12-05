@@ -1,4 +1,3 @@
-```javascript
 import React, { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Button from '../components/Button';
@@ -16,11 +15,11 @@ const JobCard = ({ title, location, date, price, distance }) => (
                     {location} • {distance}
                 </div>
             </div>
-            <div style={{ 
-                backgroundColor: '#e8f5e9', 
-                color: '#2e7d32', 
-                padding: '4px 8px', 
-                borderRadius: '8px', 
+            <div style={{
+                backgroundColor: '#e8f5e9',
+                color: '#2e7d32',
+                padding: '4px 8px',
+                borderRadius: '8px',
                 fontWeight: '600',
                 fontSize: '14px'
             }}>
@@ -75,12 +74,12 @@ const CleanerHome = () => {
 
             {/* Tabs */}
             <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
-                <button 
+                <button
                     onClick={() => setActiveTab('jobs')}
-                    style={{ 
-                        padding: '12px 0', 
-                        background: 'none', 
-                        border: 'none', 
+                    style={{
+                        padding: '12px 0',
+                        background: 'none',
+                        border: 'none',
                         borderBottom: activeTab === 'jobs' ? '2px solid var(--color-primary)' : 'none',
                         color: activeTab === 'jobs' ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                         fontWeight: activeTab === 'jobs' ? '600' : '400',
@@ -90,12 +89,12 @@ const CleanerHome = () => {
                 >
                     Jobs
                 </button>
-                <button 
+                <button
                     onClick={() => setActiveTab('profile')}
-                    style={{ 
-                        padding: '12px 0', 
-                        background: 'none', 
-                        border: 'none', 
+                    style={{
+                        padding: '12px 0',
+                        background: 'none',
+                        border: 'none',
                         borderBottom: activeTab === 'profile' ? '2px solid var(--color-primary)' : 'none',
                         color: activeTab === 'profile' ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                         fontWeight: activeTab === 'profile' ? '600' : '400',
@@ -127,7 +126,7 @@ const CleanerHome = () => {
                     </div>
 
                     <h2 style={{ fontSize: '20px', marginBottom: '16px' }}>Available Jobs</h2>
-                    
+
                     {availableJobs.map(job => (
                         <JobCard key={job.id} {...job} />
                     ))}
@@ -141,13 +140,13 @@ const CleanerHome = () => {
                     <Card style={{ padding: '24px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                <div style={{ 
-                                    width: '60px', 
-                                    height: '60px', 
-                                    backgroundColor: 'var(--color-primary)', 
-                                    borderRadius: '50%', 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                <div style={{
+                                    width: '60px',
+                                    height: '60px',
+                                    backgroundColor: 'var(--color-primary)',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     justifyContent: 'center',
                                     color: 'white'
                                 }}>
@@ -231,4 +230,3 @@ const CleanerHome = () => {
 };
 
 export default CleanerHome;
-```
