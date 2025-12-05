@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Onboarding from './pages/Onboarding';
 import Matching from './pages/Matching';
 import BookingSuccess from './pages/BookingSuccess';
+import { supabase } from './supabaseClient';
 
 function App() {
     const [currentView, setCurrentView] = useState('login'); // 'login', 'home', 'onboarding', 'matching', 'booking-success'
     const [requestData, setRequestData] = useState(null);
     const [selectedCleaner, setSelectedCleaner] = useState(null);
+    const [session, setSession] = useState(null);
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session);
+            if (session) setCurrentView('home');
+        });
+
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+            if (session) {
+                setCurrentView('home');
+            } else {
+                setCurrentView('login');
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
 
     const handleLogin = () => {
-        setCurrentView('home');
+        // Handled by useEffect
     };
 
     const handleNavigate = (view) => {

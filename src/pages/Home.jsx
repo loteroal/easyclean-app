@@ -3,7 +3,8 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Calendar from '../components/Calendar';
 import ServiceCard from '../components/ServiceCard';
-import { Calendar as CalendarIcon, Clock, Star, Plus, Lock, Dog, Grid, ShieldCheck, X, Heart, QrCode } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Star, Plus, Lock, Dog, Grid, ShieldCheck, X, Heart, QrCode, LogOut } from 'lucide-react';
+import { supabase } from '../supabaseClient';
 
 const StatCard = ({ icon: Icon, label, value, color, onClick }) => (
     <Card
@@ -84,6 +85,9 @@ const Home = ({ onNavigate }) => {
                     <p style={{ color: 'var(--color-text-secondary)' }}>Here's your cleaning summary.</p>
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
+                    <Button variant="secondary" onClick={() => supabase.auth.signOut()} style={{ padding: '12px' }}>
+                        <LogOut size={20} />
+                    </Button>
                     <Button variant="secondary" onClick={() => setShowQRModal(true)} style={{ padding: '12px' }}>
                         <QrCode size={20} />
                     </Button>
