@@ -3,13 +3,17 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { supabase } from '../supabaseClient';
-import { Check, User } from 'lucide-react';
+import { Check, User, MapPin, DollarSign, Clock, Phone } from 'lucide-react';
 
 const CleanerOnboarding = ({ onComplete }) => {
     const [loading, setLoading] = useState(false);
     const [experience, setExperience] = useState('');
     const [bio, setBio] = useState('');
     const [specialties, setSpecialties] = useState([]);
+    const [hourlyRate, setHourlyRate] = useState('');
+    const [location, setLocation] = useState('');
+    const [availability, setAvailability] = useState('');
+    const [phone, setPhone] = useState('');
 
     const availableSpecialties = [
         'Standard Cleaning',
@@ -38,6 +42,10 @@ const CleanerOnboarding = ({ onComplete }) => {
                     experience,
                     bio,
                     specialties,
+                    hourly_rate: hourlyRate,
+                    location,
+                    availability,
+                    phone,
                     onboarding_complete: true
                 }
             });
@@ -77,16 +85,57 @@ const CleanerOnboarding = ({ onComplete }) => {
                         <User size={32} />
                     </div>
                     <h2 style={{ fontSize: '28px', marginBottom: '8px' }}>Cleaner Profile</h2>
-                    <p style={{ color: 'var(--color-text-secondary)' }}>Tell us about your experience and skills.</p>
+                    <p style={{ color: 'var(--color-text-secondary)' }}>Complete your profile to get hired.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <Input
+                            label="Years of Experience"
+                            type="number"
+                            placeholder="e.g. 3"
+                            value={experience}
+                            onChange={(e) => setExperience(e.target.value)}
+                            required
+                        />
+                        <Input
+                            label="Hourly Rate ($)"
+                            type="number"
+                            placeholder="e.g. 25"
+                            value={hourlyRate}
+                            onChange={(e) => setHourlyRate(e.target.value)}
+                            required
+                        />
+                    </div>
+
                     <Input
-                        label="Years of Experience"
-                        type="number"
-                        placeholder="e.g. 3"
-                        value={experience}
-                        onChange={(e) => setExperience(e.target.value)}
+                        label="Service Area / Location"
+                        type="text"
+                        placeholder="e.g. Downtown, Brooklyn..."
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        icon={MapPin}
+                        required
+                    />
+
+                    <Input
+                        label="Availability"
+                        type="text"
+                        placeholder="e.g. Mon-Fri, 9am - 5pm"
+                        value={availability}
+                        onChange={(e) => setAvailability(e.target.value)}
+                        icon={Clock}
+                        required
+                    />
+
+                    <Input
+                        label="Phone Number"
+                        type="tel"
+                        placeholder="e.g. +1 234 567 890"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        icon={Phone}
                         required
                     />
 
